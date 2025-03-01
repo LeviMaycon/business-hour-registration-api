@@ -12,3 +12,74 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Admin {
+  id String @id @default(uuid())
+  fullname String
+  phone String
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Adress Adress[]
+
+  Business Business[]
+}
+
+model Adress {
+  id String @id @default(uuid())
+  adminId String
+  admin Admin @relation(fields: [adminId], references: [id])
+  street String
+  number String
+  city String
+  state String
+  postal_code String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Business {
+  id String @id @default(uuid())
+  adminId String
+  admin Admin? @relation(fields: [adminId], references: [id])
+  cnpj String @unique
+  state_registration String
+  specialty Speciality[]
+}
+
+// enums
+
+enum Speciality {
+  AFRICANA
+  ACAI
+  JAPONESA
+  ARABE
+  CHINESA
+  BRASILEIRA
+  ITALIANA
+  MEXICANA
+  VEGETARIANA
+  VEGANA
+  AMERICANA
+  MEDITERRANEA
+  PIZZARIA
+  HAMBURGUERIA
+  SUSHI
+  FAST_FOOD
+  INDIGENA
+  TAILANDESA
+  FRANCES
+  COREANA
+  INDIANA
+  PERUANA
+  CAJUN
+  ESPANHOLA
+  FUSION
+  CONTEMPORANEA
+  COSTELA
+  SEAFOOD
+  LANCHONETE
+  GRILL
+}
